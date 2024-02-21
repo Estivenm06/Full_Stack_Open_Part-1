@@ -1,127 +1,134 @@
-/*Exercise 1.1*/
-/*
-const App = (props) => {
-  const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
+/* 1.12 part 1.0
+import { useState } from 'react'
+const Button = property => (<button onClick={property.handleClick}>{property.text}</button>)
 
-  const Header = (props) => {
-    return (
-      <div>
-        <h1>{props.course}</h1>
-      </div>
-    )
-  }
+const App = () => {
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
 
-  const Content = (props) => {
-    return (
-      <div>
-        <ul>
-          <li>
-            {props.part1}, {props.exercises1}
-          </li>
-          <li>
-            {props.part2}, {props.exercises2}
-          </li>
-          <li>
-            {props.part3}, {props.exercises3}
-          </li>
-        </ul>
-      </div>
-    )
-  }
-
-  const Total = props => {
-    return (
-      <div>
-        <p>Total of exercises is = {props.exercises1 + props.exercises2 + props.exercises3} </p>
-      </div>
-    )
-  }
+  const [selected, setSelected] = useState(0)
+  const nextAnecdote = () => { setSelected(Math.floor(Math.random() * anecdotes.length)) }
 
   return (
     <div>
-      <Header course={course} />
-      <Content part1={part1} exercises1={exercises1} part2={part2} exercises2={exercises2} part3={part3} exercises3={exercises3} />
-      <Total exercises1={exercises1} exercises2={exercises2} exercises3={exercises3} />
+      {anecdotes[selected]}
+        <div>
+        <Button handleClick={nextAnecdote} text="next anecdote" />
+      </div>
     </div>
   )
 }
 */
-
+/*1.13 Step 2.0
+import { useState } from 'react'
+const Button = property => (<button onClick={property.handleClick}>{property.text}</button>)
+const Vote = property => (<p>has {property.votes} votes</p>)
 
 const App = () => {
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
 
-  const course = "Half Stack application development";
-
-  const Header = property => {
-    return (
-      <div>
-        <h1>{property.course}</h1>
-      </div>
-    )
+  const [selected, setSelected] = useState(0)
+  const [votes, setVoted] = useState(Array(anecdotes.length).fill(0))
+  const votedAnecdote = () => {
+    const copy = [...votes]
+    copy[selected] += 1
+    setVoted(copy)
   }
+  const nextAnecdote = () => { setSelected(Math.floor(Math.random() * anecdotes.length)) }
 
   return (
     <div>
-      <Header course={course} />
-      <Content />
-      <Total />
+      {anecdotes[selected]}
+      <Vote votes={votes[selected]} />
+      <div>
+        <Button handleClick={votedAnecdote} text="vote" />
+        <Button handleClick={nextAnecdote} text="next anecdote" />
+      </div>
+    </div>
+  )
+}
+*/
+import { useState } from 'react'
+
+const Button = property => (<button onClick={property.handleClick}>{property.text}</button>)
+const Title = property => (<h1>{property.text}</h1>)
+const Anecdote = property => {
+  return (
+    <div>
+      <p>{property.anecdote}</p>
+      <p>has {property.votes} votes</p>
     </div>
   )
 }
 
-  const Part = props => {
-    return (
-      <div>
-        <p> {props.part}, {props.exercises}</p>
-      </div>
-    )
+const App = () => {
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
+
+  const [selected, setSelected] = useState(0)
+  const [votes, setVoted] = useState(Array(anecdotes.length).fill(0))
+  const copy = [...votes]
+  const votedAnecdote = () => {
+    copy[selected] += 1
+    setVoted(copy)
+  }
+  const nextAnecdote = () => { setSelected(Math.floor(Math.random() * anecdotes.length)) }
+  const Max_VotedAnecdotes = ({ anecdotes, votes }) => {
+    const max = Math.max(...votes)
+    const maxVotedAnecdote = copy.indexOf(max)
+
+    if (max === 0) {
+      return (
+        <div>
+          <p style={{ fontSize: "20px" , fontfamily: "Times New Roman"}}>Not votes yet</p>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div>
+          <p>{anecdotes[maxVotedAnecdote]}</p>
+          <p>Has {max} votes</p>
+        </div>
+      )
+    }
   }
 
-  const Content = () => {
-    const objects = array.map(
-      function (list) {
-        return (
-          <div>
-            <Part part={list.part} exercises={list.exercises} />
-          </div>
-        )
-      }
-    )
-    return objects;
-  }
-
-const array = [
-  {
-    id: 1,
-    part: "Fundamentals of React",
-    exercises: 10
-  },
-  {
-    id: 2,
-    part: "Using props to pass data",
-    exercises: 7,
-  },
-  {
-    id: 3,
-    part: "State of a component",
-    exercises: 14,
-  }
-]
-
-const Total = () => {
-  var number = 0;
-  for (var i = 0; i < array.length; i++) {
-    number = number + array[i].exercises
-  }
   return (
     <div>
-      <p>Total of exercises = {number}</p>
+      <Title text="Anecdote of the day" />
+      <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]} />
+      <div>
+        <Button handleClick={votedAnecdote} text="vote" />
+        <Button handleClick={nextAnecdote} text="next anecdote" />
+      </div>
+      <Title text="Anecdote with most votes" />
+      <Max_VotedAnecdotes anecdotes={anecdotes} votes={copy} />
     </div>
   )
 }
